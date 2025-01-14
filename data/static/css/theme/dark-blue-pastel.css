@@ -1,0 +1,12 @@
+
+:root {
+    --background-color: #154360; /* Deep Navy Blue */
+    --text-color: #D6EAF8;       /* Soft Sky Blue */
+    --accent-color: #2874A6;     /* Rich Aqua */
+    --secondary-color: #1B4F72;  /* Midnight Blue */
+
+    /* New Colors */
+    --highlight-color: #FAD7A0;  /* Soft Peach */
+    --neutral-color: #F2F4F4;    /* Soft Gray */
+    --attention-color: #48C9B0;  /* Bright Aqua */
+}

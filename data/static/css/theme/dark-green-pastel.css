@@ -1,0 +1,12 @@
+
+:root {
+    --background-color: #2F4F2F; /* Forest Green */
+    --text-color: #E8F5E9;       /* Mint Green */
+    --accent-color: #6DBF6D;     /* Muted Lime */
+    --secondary-color: #8BE08B;  /* Bright Mint */
+
+    /* New Colors */
+    --highlight-color: #B1E5B1;  /* Bright Mint */
+    --neutral-color: #D5E8D5;    /* Light Grayish Green */
+    --attention-color: #63D863;  /* Vivid Lime */
+}

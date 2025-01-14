@@ -1,0 +1,41 @@
+<form novalidate class="container-fluid mt-3 text-color">
+  <div class="card mb-2 background-base w-50">
+    <div class="card-body">
+      <h3>Appearance</h3>
+      <select class="form-select mb-3" aria-label="Color schemes" data-bind="system/scheme">
+        <option selected value="default">Default</option>
+      </select>
+
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input" type="checkbox" role="switch" id="dark-theme-switch"
+          data-bind="system/dark_theme">
+        <label class="form-check-label" for="dark-theme-switch">Use dark theme?</label>
+        <div class="invalid-feedback" data-feedback="system/theme">Invalid value</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-2 background-base w-50">
+    <div class="card-body">
+      <h3>System Actions</h3>
+      <button type="button" class="btn bg-danger" data-action="redownload:null">Redownload WebUI Dependencies</button>
+    </div>
+  </div>
+
+  <div class="card mb-2 background-base w-50">
+    <div class="card-body">
+      <h3>System Locale</h3>
+      <label for="system-locale" class="form-label">Locale identifier</label>
+      <input type="text" class="form-control mb-2" placeholder="en" data-bind="system/locale" id="system-locale">
+
+      <label for="system-currency" class="form-label">Currency identifier</label>
+      <select class="form-select mb-3" aria-label="Currencies" data-bind="system/currency">
+        <option value="default" selected="selected">Default</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+    <button class="btn accent-color btn-secondary-hover" type="submit" data-id="settings-submit">$[submit_text]</button>
+  </div>
+</form>

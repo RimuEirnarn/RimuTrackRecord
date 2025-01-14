@@ -1,0 +1,12 @@
+
+:root {
+    --background-color: #FFECEC; /* Soft Pink */
+    --text-color: #4C4A4A;      /* Muted Dark Gray */
+    --accent-color: #FF9AA2;    /* Blush Pink */
+    --secondary-color: #FCD5CE; /* Peach Pink */
+
+    /* New Colors */
+    --highlight-color: #FFE6E6;  /* Pale Pink */
+    --neutral-color: #FBEFFB;    /* Whisper White */
+    --attention-color: #FFB6C1;  /* Bright Pink */
+}

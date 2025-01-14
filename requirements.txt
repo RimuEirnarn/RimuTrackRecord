@@ -1,0 +1,5 @@
+sqlite-database
+pywebview
+tqdm
+requests
+argh

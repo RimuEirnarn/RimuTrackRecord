@@ -1,0 +1,119 @@
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.background-base {
+    background-color: var(--background-color);
+}
+
+.text-color {
+    color: var(--text-color)
+}
+
+.text-accent-color {
+    color: var(--accent-color);
+}
+
+.text-secondary-color {
+    color: var(--secondary-color);
+}
+
+.text-neutral-color {
+    color: var(--neutral-color);
+}
+
+.text-attention-color {
+    color: var(--attention-color);
+}
+
+.text-highlight-color {
+    color: var(--highlight-color);
+}
+
+.accent-color {
+    background-color: var(--accent-color);
+}
+
+.secondary-color {
+    background-color: var(--secondary-color);
+}
+
+.neutral-color {
+    background-color: var(--neutral-color);
+}
+
+.attention-color {
+    background-color: var(--attention-color);
+}
+
+.highlight-color {
+    background-color: var(--highlight-color);
+}
+
+button {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+}
+
+button:hover {
+    background-color: var(--secondary-color);
+}
+
+.btn-active {
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.btn-secondary-hover:hover {
+    background-color: var(--secondary-color) !important;
+}
+
+a {
+    color: var(--accent-color);
+}
+
+a:hover {
+    color: var(--highlight-color);
+}
+
+.alert {
+    background-color: var(--highlight-color);
+    color: var(--background-color);
+}
+
+.highlighted {
+    background-color: var(--highlight-color);
+    padding: 1rem;
+}
+
+.clear-style {
+    list-style-type: none;
+    text-decoration: none;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.gap-2 {
+    gap: 1rem;
+}
+
+/* .data-summary,
+.small-card {
+    flex: 1 1 calc(25% - 1rem);
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+} */
+
+.small-card {
+    background-color: var(--neutral-color);
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.content {
+    display: flex;
+    gap: 20px;
+}
