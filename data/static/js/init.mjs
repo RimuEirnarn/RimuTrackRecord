@@ -58,6 +58,10 @@ const INIT_STATE = {
   mainjs_start: 0,
   initjs_end: 0,
   mainjs_end: 0,
+  init_to_runtime_start: 0,
+  init_to_runtime_end: 0,
+  total_start: performance.now(),
+  total_end: 0
 };
 
 /**
@@ -118,6 +122,7 @@ try {
     }ms`
   );
   setLog("Base initialization is completed");
+  INIT_STATE.init_to_runtime_start = performance.now()
 } catch (error) {
   console.error("Error initializing pywebview:", error);
 }

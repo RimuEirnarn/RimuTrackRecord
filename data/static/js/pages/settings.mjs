@@ -4,12 +4,11 @@ import { bound_buttons, globalRepository } from "../../vendor/enigmarimu.js/bind
 import { DEFAULT_SETTINGS, system, SYSTEM_SETTINGS } from "../init.mjs"
 import { normalize } from "../utils.mjs"
 import { localeValidity, MAPPING } from "../intl.mjs"
-
+import { notification } from "../notify.mjs"
 
 const DEFAULT_SCHEME = 'blue'
 
 async function setupSettingsPage() {
-  console.log('settings')
   return { 'submit_text': "Save settings" }
 }
 
@@ -59,11 +58,12 @@ async function postInitSettingsPage() {
     if (data.system.scheme === "default") {
       data.system.scheme = DEFAULT_SCHEME
     }
-    switchScheme(data.system.scheme, data.system.dark_theme ? "dark" : "light")
+    await switchScheme(data.system.scheme, data.system.dark_theme ? "dark" : "light")
     SYSTEM_SETTINGS.currency = data.system.currency == "default" ? DEFAULT_SETTINGS.currency : data.system.currency
     SYSTEM_SETTINGS.locale = localeValidity(data.system.locale) ? data.system.locale : SYSTEM_SETTINGS.locale
     await system.config.set("currency", SYSTEM_SETTINGS.currency)
     await system.config.set("locale", SYSTEM_SETTINGS.locale)
+    notification.push({title: "", body: "Settings saved"})
   })
   bound_buttons(document.querySelector('body'), globalRepository)
 }

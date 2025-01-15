@@ -31,7 +31,6 @@ async function formatCurrency(number) {
         locale = DEFAULT_SETTINGS.locale
     }
     let currency = await system.config.get("currency", DEFAULT_SETTINGS.currency)
-    console.log(currency)
     return new Intl.NumberFormat(locale, {style: "currency", currency: currency}).format(number)
 }
 
@@ -45,6 +44,6 @@ function localeValidity(locale) {
 }
 
 await loadCurrencyData()
-console.debug(MAPPING)
+// console.debug(MAPPING)
 
 export { loadCurrencyData, formatCurrency, localeValidity, MAPPING }

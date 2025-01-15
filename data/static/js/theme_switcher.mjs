@@ -8,12 +8,12 @@ const BASE = '#color-scheme'
  * @param {string} theme 
  * @returns 
  */
-function switchScheme(scheme, theme) {
+async function switchScheme(scheme, theme) {
     if (!validateBeforeApplying(scheme, theme)) {
         return;
     }
-    system.config.set("scheme", scheme);
-    system.config.set('theme', theme);
+    await system.config.set("scheme", scheme);
+    await system.config.set('theme', theme);
     SYSTEM_SETTINGS.scheme = scheme;
     SYSTEM_SETTINGS.theme = theme;
 

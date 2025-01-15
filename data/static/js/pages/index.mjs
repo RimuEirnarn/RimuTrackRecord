@@ -2,7 +2,6 @@ import { system } from "../init.mjs"
 import { formatCurrency } from "../intl.mjs";
 
 async function setupIndexPage() {
-  console.log('init')
   return {
     'current_balance': await formatCurrency(await system.retrieve_current_savings()),
     'recent_transactions': '+9999',

@@ -14,13 +14,14 @@ PATH = Path("data/static/vendor")
 
 
 def list_get(array: list, index: int, default):
+    """Much like how dict.get() is"""
     try:
         return array[index]
     except IndexError:
         return default
 
 
-def download_file(url, destination):
+def download_file(url, destination, prefix: str = "", name: str = ""):
     """Download a file with a progress bar using requests and tqdm."""
     response = requests.head(url, timeout=10)
     total_size = int(response.headers.get("content-length", 0))
@@ -28,9 +29,14 @@ def download_file(url, destination):
     with requests.get(url, stream=True, timeout=10) as r, open(destination, "wb") as f:
         r.raise_for_status()
         with tqdm(
-            total=total_size, unit="B", unit_scale=True, desc=destination, ncols=100
+            total=total_size,
+            unit="B",
+            unit_scale=True,
+            desc=prefix+(destination if name == "" else name),
+            # ncols=os.terminal_size().columns,
         ) as pbar:
             for chunk in r.iter_content(chunk_size=8192):
+                # pbar.ncols
                 if chunk:
                     f.write(chunk)
                     pbar.update(len(chunk))
@@ -92,9 +98,11 @@ def install_webui_dependency(force=False):
     urls = load_dependencies()
 
     PATH.mkdir(exist_ok=True)
+    print("-> Installing webui dependencies")
 
-    for name, rule in urls.items():
-        action_type: Literal['file', 'folder'] = 'file'
+    for index, seq in enumerate(urls.items()):
+        name, rule = seq
+        action_type: Literal["file", "folder"] = "file"
         include_file_extension: bool = False
         if isinstance(rule, str):
             url = rule
@@ -102,24 +110,24 @@ def install_webui_dependency(force=False):
             url: str = rule[0]
             action_type: str = rule[1]
             include_file_extension: bool = list_get(rule, 2, False)
-        print(f"Downloading {name} from {url}...")
+        print(f"  {index:0>2} Downloading {name} from {url}...")
 
         file_extension = url.split(".")[-1]
         destination = str(
             PATH
-            / f"{name}{'.'+file_extension if (file_extension and include_file_extension and action_type == 'file') or action_type == 'folder' else ''}" # pylint: disable=line-too-long
+            / f"{name}{'.'+file_extension if (file_extension and include_file_extension and action_type == 'file') or action_type == 'folder' else ''}"  # pylint: disable=line-too-long
         )
 
         # Use download_file function with progress bar
-        download_file(url, destination)
+        download_file(url, destination, "         ", name)
 
         if url.endswith(".zip") or action_type == "folder":
             # Unzip the file if it is a zip
             with ZipFile(destination) as zip_file:
                 zip_file.extractall(PATH)
-                print(f"{name} extracted to {PATH}")
+                print(f"         {name} extracted to {PATH}")
             os.remove(destination)  # Clean up the zip file after extraction
         else:
-            print(f"{name} saved to {destination}")
+            print(f"         {name} saved to {destination}")
 
-    print(f"All dependencies installed in {PATH}")
+    print(f"\n-> Installed: {' '.join(urls.keys())}")

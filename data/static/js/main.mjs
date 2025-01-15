@@ -1,4 +1,4 @@
-import { setLog, system, DEFAULT_SETTINGS, SYSTEM_SETTINGS } from "./init.mjs"
+import { setLog, system, DEFAULT_SETTINGS, SYSTEM_SETTINGS, INIT_STATE } from "./init.mjs"
 import { Template } from "../vendor/enigmarimu.js/template.mjs"
 import { setup, goto } from "../vendor/enigmarimu.js/pages.mjs"
 import { config } from "../vendor/enigmarimu.js/config.mjs"
@@ -6,6 +6,7 @@ import { switchScheme } from "./theme_switcher.mjs"
 import "./actions.mjs"
 import "./intl.mjs"
 import { formatCurrency } from "./intl.mjs"
+import { notification } from "./notify.mjs"
 // import { setup as index_page } from "./pages/index.mjs"
 // import { setup as settings_page } from "./pages/settings.mjs"
 
@@ -27,7 +28,7 @@ async function post_pywebview_init() {
   const theme = await system.config.get("theme");
   /** @type {string} */
   const scheme = await system.config.get("scheme")
-  switchScheme(scheme, theme);
+  await switchScheme(scheme, theme);
 }
 
 async function post_system_setting_init() {
@@ -95,7 +96,8 @@ async function page_setup() {
 
 async function main() {
   if (system.init_error) {
-    throw Error("Error in initialization. Most likely occur due to race condition.")
+    notification.push({body: "Error loading application. Refreshing immediately"})
+    location.reload()
   }
   console.info("Starting main")
 //   console.info("Config dumping")
@@ -115,3 +117,7 @@ async function main() {
 
 // await test()
 await main()
+INIT_STATE.init_to_runtime_end = performance.now()
+INIT_STATE.total_end = performance.now()
+
+console.info(`Initialization took ${INIT_STATE.init_to_runtime_end - INIT_STATE.init_to_runtime_start}ms\nTotal time: ${INIT_STATE.total_end - INIT_STATE.total_start}ms`)
