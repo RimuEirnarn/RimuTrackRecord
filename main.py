@@ -1,5 +1,5 @@
 '''main'''
-from argh import dispatch_command
+from argh import ArghParser, set_default_command
 import webview
 import system.database
 import system.webui.api
@@ -7,6 +7,8 @@ import system.config
 import system.configstore
 import system.dependency
 
+def update():
+    system.dependency.install_webui_dependency()
 
 def main(redownload: bool = False, no_run: bool = False):
     """Main Entry"""
@@ -24,4 +26,7 @@ def main(redownload: bool = False, no_run: bool = False):
     webview.start(debug=True)
 
 if __name__ == '__main__':
-    dispatch_command(main)
+    parser = ArghParser()
+    parser.add_commands([main, update])
+    set_default_command(parser, main)
+    parser.dispatch()

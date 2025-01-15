@@ -1,9 +1,11 @@
 """Webui Dependency Manager"""
 
 import os
+import hashlib
+import json
 from json import JSONDecodeError, loads
 from pathlib import Path
-from typing import Literal
+from shutil import copy
 from zipfile import ZipFile
 from tqdm import tqdm
 import requests
@@ -11,6 +13,7 @@ import requests
 from .config import ROOT
 
 PATH = Path("data/static/vendor")
+TEMP_PATH = ROOT / "temp"
 
 
 def list_get(array: list, index: int, default):
@@ -32,7 +35,7 @@ def download_file(url, destination, prefix: str = "", name: str = ""):
             total=total_size,
             unit="B",
             unit_scale=True,
-            desc=prefix+(destination if name == "" else name),
+            desc=prefix + (destination if name == "" else name),
             # ncols=os.terminal_size().columns,
         ) as pbar:
             for chunk in r.iter_content(chunk_size=8192):
@@ -90,44 +93,92 @@ def load_dependencies() -> dict[str, str | list[str, str, bool]]:
 #         if (PATH /)
 
 
-def install_webui_dependency(force=False):
-    """Install Web UI dependencies."""
-    if os.path.exists(PATH / "jquery.js") and not force:
-        return
+METADATA_PATH = PATH / "installed_dependencies.json"
 
+
+def calculate_checksum(filepath):
+    """Calculate the SHA256 checksum of a file."""
+    hash_sha256 = hashlib.sha256()
+    with open(filepath, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_sha256.update(chunk)
+    return hash_sha256.hexdigest()
+
+
+def load_metadata():
+    """Load the dependency metadata."""
+    if METADATA_PATH.exists():
+        with open(METADATA_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+
+def save_metadata(metadata):
+    """Save the dependency metadata."""
+    with open(METADATA_PATH, "w", encoding="utf-8") as f:
+        json.dump(metadata, f, indent=4)
+
+
+def install_webui_dependency(force=False):
+    """Install Web UI dependencies with update checking."""
+    metadata = load_metadata()
     urls = load_dependencies()
 
     PATH.mkdir(exist_ok=True)
-    print("-> Installing webui dependencies")
+    print("-> Installing/updating webui dependencies")
 
-    for index, seq in enumerate(urls.items()):
-        name, rule = seq
-        action_type: Literal["file", "folder"] = "file"
-        include_file_extension: bool = False
+    for index, (name, rule) in enumerate(urls.items()):
         if isinstance(rule, str):
             url = rule
-        if isinstance(rule, (list, tuple)):
-            url: str = rule[0]
-            action_type: str = rule[1]
-            include_file_extension: bool = list_get(rule, 2, False)
-        print(f"  {index:0>2} Downloading {name} from {url}...")
+            action_type = "file"
+        else:
+            url, action_type, include_file_extension = (
+                rule[0],
+                rule[1],
+                list_get(rule, 2, False),
+            )
 
-        file_extension = url.split(".")[-1]
-        destination = str(
-            PATH
-            / f"{name}{'.'+file_extension if (file_extension and include_file_extension and action_type == 'file') or action_type == 'folder' else ''}"  # pylint: disable=line-too-long
-        )
+        response = requests.head(url, timeout=10)
+        last_modified = response.headers.get("last-modified")
+        fext =  url.split(".")[-1]
+        file_extension = (
+            "." + fext
+            if (fext and include_file_extension and action_type == "file")
+            or action_type == "folder"
+            else ""
+        )  # pylint: disable=line-too-long
 
         # Use download_file function with progress bar
-        download_file(url, destination, "         ", name)
+
+        destination = str(PATH / (name + file_extension))
+        temp = str(TEMP_PATH / (name + file_extension))
+
+        # Skip download if metadata matches
+        if not force and name in metadata:
+            current_checksum = metadata[name].get("checksum")
+            current_modified = metadata[name].get("last_modified")
+
+            if last_modified == current_modified or os.path.exists(temp):
+                if current_checksum == calculate_checksum(temp):
+                    print(f"  {index:0>2} {name} is up-to-date. Skipping.")
+                    continue
+
+        # Download and update metadata
+        print(f"  {index:0>2} Downloading {name} from {url}...")
+        download_file(url, temp, "         ", name)
 
         if url.endswith(".zip") or action_type == "folder":
-            # Unzip the file if it is a zip
-            with ZipFile(destination) as zip_file:
+            with ZipFile(temp) as zip_file:
                 zip_file.extractall(PATH)
                 print(f"         {name} extracted to {PATH}")
-            os.remove(destination)  # Clean up the zip file after extraction
-        else:
-            print(f"         {name} saved to {destination}")
+        if action_type == 'file':
+            copy(temp, destination)
 
-    print(f"\n-> Installed: {' '.join(urls.keys())}")
+        metadata[name] = {
+            "url": url,
+            "last_modified": last_modified,
+            "checksum": calculate_checksum(temp),
+        }
+
+    save_metadata(metadata)
+    print(f"\n-> Installed/updated: {' '.join(urls.keys())}")

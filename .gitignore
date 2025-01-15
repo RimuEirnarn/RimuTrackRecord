@@ -166,3 +166,6 @@ user_tests/*
 !user_tests/README.md
 !user_tests/__init__.py
 main.db
+
+/temp/*
+!/temp/README.md
