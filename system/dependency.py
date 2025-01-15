@@ -99,10 +99,13 @@ METADATA_PATH = PATH / "installed_dependencies.json"
 def calculate_checksum(filepath):
     """Calculate the SHA256 checksum of a file."""
     hash_sha256 = hashlib.sha256()
-    with open(filepath, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_sha256.update(chunk)
-    return hash_sha256.hexdigest()
+    try:
+        with open(filepath, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_sha256.update(chunk)
+        return hash_sha256.hexdigest()
+    except FileNotFoundError:
+        return ""
 
 
 def load_metadata():
