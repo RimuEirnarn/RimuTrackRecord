@@ -7,7 +7,12 @@ import system.config
 import system.configstore
 import system.dependency
 
+def clear():
+    """Clear all webui dependency caches"""
+    system.dependency.clear_cache()
+
 def update():
+    """Update webui dependency if necessary"""
     system.dependency.install_webui_dependency()
 
 def main(redownload: bool = False, no_run: bool = False):
@@ -27,6 +32,6 @@ def main(redownload: bool = False, no_run: bool = False):
 
 if __name__ == '__main__':
     parser = ArghParser()
-    parser.add_commands([main, update])
+    parser.add_commands([main, update, clear])
     set_default_command(parser, main)
     parser.dispatch()

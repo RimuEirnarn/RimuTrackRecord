@@ -118,8 +118,15 @@ def save_metadata(metadata):
     with open(METADATA_PATH, "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=4)
 
+def clear_cache():
+    """Clear download caches"""
+    files = os.listdir(TEMP_PATH)
+    files.remove("README.md") # for obvious reason, duh
+    for (index, file) in enumerate(files):
+        os.remove(TEMP_PATH / file)
+        print(f'{index+1:0>2} {file} is removed from cache')
 
-def install_webui_dependency(force=False):
+def install_webui_dependency(force=False): # pylint: disable=too-many-locals
     """Install Web UI dependencies with update checking."""
     metadata = load_metadata()
     urls = load_dependencies()
@@ -164,7 +171,7 @@ def install_webui_dependency(force=False):
                     continue
 
         # Download and update metadata
-        print(f"  {index:0>2} Downloading {name} from {url}...")
+        print(f"  {index+1:0>2} Downloading {name} from {url}...")
         download_file(url, temp, "         ", name)
 
         if url.endswith(".zip") or action_type == "folder":
