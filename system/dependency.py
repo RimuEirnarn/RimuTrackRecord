@@ -6,6 +6,7 @@ import json
 from json import JSONDecodeError, loads
 from pathlib import Path
 from shutil import copy
+from time import sleep
 from zipfile import ZipFile
 from tqdm import tqdm
 import requests
@@ -24,11 +25,7 @@ def list_get(array: list, index: int, default):
         return default
 
 
-def download_file(url, destination, prefix: str = "", name: str = ""):
-    """Download a file with a progress bar using requests and tqdm."""
-    response = requests.head(url, timeout=10)
-    total_size = int(response.headers.get("content-length", 0))
-
+def _download(url: str, destination: str, prefix: str, name: str, total_size: int):
     with requests.get(url, stream=True, timeout=10) as r, open(destination, "wb") as f:
         r.raise_for_status()
         with tqdm(
@@ -45,6 +42,23 @@ def download_file(url, destination, prefix: str = "", name: str = ""):
                     pbar.update(len(chunk))
 
 
+def download_file(
+    url, destination, prefix: str = "", name: str = "", retries=3, retries_after=2
+):
+    """Download a file with a progress bar using requests and tqdm."""
+    response = requests.head(url, timeout=10)
+    total_size = int(response.headers.get("content-length", 0))
+
+    for i in range(retries):
+        try:
+            _download(url, destination, prefix, name, total_size)
+            return
+        except requests.ReadTimeout:
+            rt = retries_after * (i + 1)
+            print(f"Request timed out. Retrying after in {rt}", flush=True)
+            sleep(rt)
+
+
 def load_dependencies() -> dict[str, str | list[str, str, bool]]:
     """Load all webui dependencies from its file"""
     deps_path = ROOT / "webui_dependencies.json"
@@ -56,11 +70,11 @@ def load_dependencies() -> dict[str, str | list[str, str, bool]]:
     except JSONDecodeError:
         return {
             "bootstrap_icons": [
-                "https://github.com/twbs/icons/releases/download/v1.11.3/bootstrap-icons-1.11.3.zip",
+                "https://github.com/twbs/icons/releases/download/v1.11.3/bootstrap-icons-1.11.3.zip", # pylint: disable=line-too-long
                 "folder",
             ],
             "bootstrap": [
-                "https://github.com/twbs/bootstrap/releases/download/v5.3.3/bootstrap-5.3.3-dist.zip",
+                "https://github.com/twbs/bootstrap/releases/download/v5.3.3/bootstrap-5.3.3-dist.zip", # pylint: disable=line-too-long
                 "folder",
             ],
             "jquery": ["https://code.jquery.com/jquery-3.6.4.min.js", "file", True],
@@ -69,7 +83,7 @@ def load_dependencies() -> dict[str, str | list[str, str, bool]]:
                 "folder",
             ],
             "chart.min.js": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js",
-            "chart.umd.js.map": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js.map",
+            "chart.umd.js.map": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js.map", # pylint: disable=line-too-long
             "countries.data.json": "https://restcountries.com/v3.1/all?fields=name,currencies",
         }
 
@@ -96,8 +110,8 @@ def load_dependencies() -> dict[str, str | list[str, str, bool]]:
 METADATA_PATH = PATH / "installed_dependencies.json"
 
 
-def calculate_checksum(filepath):
-    """Calculate the SHA256 checksum of a file."""
+def calculate_checksum(filepath, default_checksum: str = ""):
+    """Calculate the SHA256 checksum of a file. If fails, returns default checksum"""
     hash_sha256 = hashlib.sha256()
     try:
         with open(filepath, "rb") as f:
@@ -105,7 +119,7 @@ def calculate_checksum(filepath):
                 hash_sha256.update(chunk)
         return hash_sha256.hexdigest()
     except FileNotFoundError:
-        return ""
+        return default_checksum
 
 
 def load_metadata():
@@ -121,21 +135,31 @@ def save_metadata(metadata):
     with open(METADATA_PATH, "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=4)
 
+
 def clear_cache():
     """Clear download caches"""
     files = os.listdir(TEMP_PATH)
-    files.remove("README.md") # for obvious reason, duh
-    for (index, file) in enumerate(files):
-        os.remove(TEMP_PATH / file)
-        print(f'{index+1:0>2} {file} is removed from cache')
+    files.remove("README.md")  # for obvious reason, duh
+    for index, file in enumerate(files):
+        try:
+            os.remove(TEMP_PATH / file)
+        except FileNotFoundError:
+            pass
+        print(f"{index+1:0>2} {file} is removed from cache", flush=True)
 
-def install_webui_dependency(force=False): # pylint: disable=too-many-locals
+
+def install_webui_dependency(force=False):  # pylint: disable=too-many-locals
     """Install Web UI dependencies with update checking."""
     metadata = load_metadata()
     urls = load_dependencies()
 
+    # stats
+    installs = []
+    updates = []
+
     PATH.mkdir(exist_ok=True)
-    print("-> Installing/updating webui dependencies")
+    TEMP_PATH.mkdir(exist_ok=True)
+    print("-> Installing/updating webui dependencies", flush=True)
 
     for index, (name, rule) in enumerate(urls.items()):
         if isinstance(rule, str):
@@ -150,7 +174,7 @@ def install_webui_dependency(force=False): # pylint: disable=too-many-locals
 
         response = requests.head(url, timeout=10)
         last_modified = response.headers.get("last-modified")
-        fext =  url.split(".")[-1]
+        fext = url.split(".")[-1]
         file_extension = (
             "." + fext
             if (fext and include_file_extension and action_type == "file")
@@ -168,20 +192,25 @@ def install_webui_dependency(force=False): # pylint: disable=too-many-locals
             current_checksum = metadata[name].get("checksum")
             current_modified = metadata[name].get("last_modified")
 
-            if last_modified == current_modified or os.path.exists(temp):
-                if current_checksum == calculate_checksum(temp):
-                    print(f"  {index:0>2} {name} is up-to-date. Skipping.")
+            if last_modified == current_modified:
+                if current_checksum == calculate_checksum(
+                    temp, metadata.get(name, {'checksum': ""})['checksum']
+                ):
+                    print(f"  {index+1:0>2} {name} is up-to-date. Skipping.", flush=True)
                     continue
+            updates.append(name)
 
         # Download and update metadata
-        print(f"  {index+1:0>2} Downloading {name} from {url}...")
+        print(f"  {index+1:0>2} Downloading {name} from {url}...", flush=True)
+        if not name in updates:
+            installs.append(name)
         download_file(url, temp, "         ", name)
 
         if url.endswith(".zip") or action_type == "folder":
             with ZipFile(temp) as zip_file:
                 zip_file.extractall(PATH)
-                print(f"         {name} extracted to {PATH}")
-        if action_type == 'file':
+                print(f"         {name} extracted to {PATH}", flush=True)
+        if action_type == "file":
             copy(temp, destination)
 
         metadata[name] = {
@@ -191,4 +220,11 @@ def install_webui_dependency(force=False): # pylint: disable=too-many-locals
         }
 
     save_metadata(metadata)
-    print(f"\n-> Installed/updated: {' '.join(urls.keys())}")
+    print()
+    if installs:
+        print(f"-> Installed: {' '.join(installs)}", flush=True)
+    if updates:
+        print(f'-> Updated: {' '.join(updates)}', flush=True)
+
+    if not installs and not updates:
+        print('-> No updates available', flush=True)
