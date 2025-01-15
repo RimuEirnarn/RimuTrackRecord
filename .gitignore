@@ -159,6 +159,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+/data/static/vendor/bootstrap-5.3.3-dist/js/*
 data/static/vendor/*
 !data/static/vendor/README.md
 node_modules
