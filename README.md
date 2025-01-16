@@ -1,4 +1,4 @@
- # RimuTrackRecord
+# RimuTrackRecord
 
 This is just another financial tracking app. It uses pywebvies as GUI backend. So it's highly cross-platform by theory.
 
