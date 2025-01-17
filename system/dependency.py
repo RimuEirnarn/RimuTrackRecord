@@ -165,6 +165,7 @@ def install_webui_dependency(force=False):  # pylint: disable=too-many-locals
         if isinstance(rule, str):
             url = rule
             action_type = "file"
+            include_file_extension = False
         else:
             url, action_type, include_file_extension = (
                 rule[0],

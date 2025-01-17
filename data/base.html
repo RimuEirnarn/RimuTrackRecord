@@ -1,233 +1,243 @@
 <html>
+
 <head>
-    <title>Financial Tracking App</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --background-color: #D6EAF8; /* Soft Sky Blue */
-            --text-color: #2C3E50;      /* Deep Navy */
-            --accent-color: #AED6F1;    /* Light Aqua */
-            --secondary-color: #EBF5FB; /* Whisper Blue */
-            --highlight-color: #F9E79F;  /* Soft Yellow */
-            --neutral-color: #F4F6F6;    /* Pale Gray */
-            --attention-color: #5DADE2;  /* Bright Blue */
-        }
+  <title>Financial Tracking App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --background-color: #D6EAF8;
+      /* Soft Sky Blue */
+      --text-color: #2C3E50;
+      /* Deep Navy */
+      --accent-color: #AED6F1;
+      /* Light Aqua */
+      --secondary-color: #EBF5FB;
+      /* Whisper Blue */
+      --highlight-color: #F9E79F;
+      /* Soft Yellow */
+      --neutral-color: #F4F6F6;
+      /* Pale Gray */
+      --attention-color: #5DADE2;
+      /* Bright Blue */
+    }
 
-        body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-        .background-base {
-            background-color: var(--background-color);
-        }
+    .background-base {
+      background-color: var(--background-color);
+    }
 
-        .text-color {
-            color: var(--text-color);
-        }
+    .text-color {
+      color: var(--text-color);
+    }
 
-        .text-accent-color {
-            color: var(--accent-color);
-        }
+    .text-accent-color {
+      color: var(--accent-color);
+    }
 
-        .text-secondary-color {
-            color: var(--secondary-color);
-        }
+    .text-secondary-color {
+      color: var(--secondary-color);
+    }
 
-        .text-neutral-color {
-            color: var(--neutral-color);
-        }
+    .text-neutral-color {
+      color: var(--neutral-color);
+    }
 
-        .text-attention-color {
-            color: var(--attention-color);
-        }
+    .text-attention-color {
+      color: var(--attention-color);
+    }
 
-        .text-highlight-color {
-            color: var(--highlight-color);
-        }
+    .text-highlight-color {
+      color: var(--highlight-color);
+    }
 
-        .accent-color {
-            background-color: var(--accent-color);
-        }
+    .accent-color {
+      background-color: var(--accent-color);
+    }
 
-        .secondary-color {
-            background-color: var(--secondary-color);
-        }
+    .secondary-color {
+      background-color: var(--secondary-color);
+    }
 
-        .neutral-color {
-            background-color: var(--neutral-color);
-        }
+    .neutral-color {
+      background-color: var(--neutral-color);
+    }
 
-        .attention-color {
-            background-color: var(--attention-color);
-        }
+    .attention-color {
+      background-color: var(--attention-color);
+    }
 
-        .highlight-color {
-            background-color: var(--highlight-color);
-        }
+    .highlight-color {
+      background-color: var(--highlight-color);
+    }
 
-        button {
-            background-color: var(--accent-color);
-            color: var(--text-color);
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+    button {
+      background-color: var(--accent-color);
+      color: var(--text-color);
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+    }
 
-        button:hover {
-            background-color: var(--secondary-color);
-        }
+    button:hover {
+      background-color: var(--secondary-color);
+    }
 
-        .btn-active {
-            border-bottom: 2px solid var(--accent-color);
-        }
+    .btn-active {
+      border-bottom: 2px solid var(--accent-color);
+    }
 
-        .btn-secondary-hover:hover {
-            background-color: var(--secondary-color) !important;
-        }
+    .btn-secondary-hover:hover {
+      background-color: var(--secondary-color) !important;
+    }
 
-        a {
-            color: var(--text-color);
-            text-decoration: none;
-        }
+    a {
+      color: var(--text-color);
+      text-decoration: none;
+    }
 
-        a:hover {
-            color: var(--highlight-color);
-        }
+    a:hover {
+      color: var(--highlight-color);
+    }
 
-        .alert {
-            background-color: var(--highlight-color);
-            color: var (--background-color);
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-        }
+    .alert {
+      background-color: var(--highlight-color);
+      color: var (--background-color);
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
 
-        .highlighted {
-            background-color: var(--highlight-color);
-            padding: 1rem;
-            border-radius: 5px;
-        }
+    .highlighted {
+      background-color: var(--highlight-color);
+      padding: 1rem;
+      border-radius: 5px;
+    }
 
-        .clear-style {
-            list-style-type: none;
-            text-decoration: none;
-            padding: 0;
-            margin: 0;
-        }
+    .clear-style {
+      list-style-type: none;
+      text-decoration: none;
+      padding: 0;
+      margin: 0;
+    }
 
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
 
-        .header h1 {
-            margin: 0;
-        }
+    .header h1 {
+      margin: 0;
+    }
 
-        .nav {
-            display: flex;
-            gap: 20px;
-        }
+    .nav {
+      display: flex;
+      gap: 20px;
+    }
 
-        .nav a {
-            font-size: 18px;
-        }
+    .nav a {
+      font-size: 18px;
+    }
 
-        .content {
-            display: flex;
-            gap: 20px;
-        }
+    .content {
+      display: flex;
+      gap: 20px;
+    }
 
-        .sidebar {
-            width: 25%;
-        }
+    .sidebar {
+      width: 25%;
+    }
 
-        .main-content {
-            width: 75%;
-        }
+    .main-content {
+      width: 75%;
+    }
 
-        .card {
-            background-color: var(--neutral-color);
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
+    .card {
+      background-color: var(--neutral-color);
+      padding: 20px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
 
-        .card h2 {
-            margin-top: 0;
-        }
+    .card h2 {
+      margin-top: 0;
+    }
 
-        .footer {
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 20px;
-            border-top: 1px solid var(--accent-color);
-        }
-    </style>
+    .footer {
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 20px;
+      border-top: 1px solid var(--accent-color);
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>Financial Tracker</h1>
-            <nav class="nav">
-                <a href="#" class="text-color">Dashboard</a>
-                <a href="#" class="text-color">Transactions</a>
-                <a href="#" class="text-color">Reports</a>
-                <a href="#" class="text-color">Settings</a>
-            </nav>
-        </header>
-        <div class="content">
-            <aside class="sidebar">
-                <div class="card">
-                    <h2>Account Balance</h2>
-                    <p>$12,345.67</p>
-                </div>
-                <div class="card">
-                    <h2>Recent Transactions</h2>
-                    <ul class="clear-style">
-                        <li>Groceries: -$123.45</li>
-                        <li>Salary: +$2,000.00</li>
-                        <li>Utilities: -$150.00</li>
-                        <li>Rent: -$1,200.00</li>
-                        <li>Investment: +$500.00</li>
-                    </ul>
-                </div>
-            </aside>
-            <main class="main-content">
-                <div class="card">
-                    <h2>Monthly Overview</h2>
-                    <p>Income: $5,000.00</p>
-                    <p>Expenses: $3,000.00</p>
-                    <p>Savings: $2,000.00</p>
-                </div>
-                <div class="card">
-                    <h2>Spending Categories</h2>
-                    <p>Groceries: $500.00</p>
-                    <p>Utilities: $200.00</p>
-                    <p>Entertainment: $300.00</p>
-                    <p>Transport: $100.00</p>
-                    <p>Others: $400.00</p>
-                </div>
-            </main>
+  <div class="container">
+    <header class="header">
+      <h1>Financial Tracker</h1>
+      <nav class="nav">
+        <a href="#" class="text-color">Dashboard</a>
+        <a href="#" class="text-color">Transactions</a>
+        <a href="#" class="text-color">Reports</a>
+        <a href="#" class="text-color">Settings</a>
+      </nav>
+    </header>
+    <div class="content">
+      <aside class="sidebar">
+        <div class="card">
+          <h2>Account Balance</h2>
+          <p>$12,345.67</p>
         </div>
-        <footer class="footer">
-            <p>&copy; 2023 Financial Tracker. All rights reserved.</p>
-        </footer>
+        <div class="card">
+          <h2>Recent Transactions</h2>
+          <ul class="clear-style">
+            <li>Groceries: -$123.45</li>
+            <li>Salary: +$2,000.00</li>
+            <li>Utilities: -$150.00</li>
+            <li>Rent: -$1,200.00</li>
+            <li>Investment: +$500.00</li>
+          </ul>
+        </div>
+      </aside>
+      <main class="main-content">
+        <div class="card">
+          <h2>Monthly Overview</h2>
+          <p>Income: $5,000.00</p>
+          <p>Expenses: $3,000.00</p>
+          <p>Savings: $2,000.00</p>
+        </div>
+        <div class="card">
+          <h2>Spending Categories</h2>
+          <p>Groceries: $500.00</p>
+          <p>Utilities: $200.00</p>
+          <p>Entertainment: $300.00</p>
+          <p>Transport: $100.00</p>
+          <p>Others: $400.00</p>
+        </div>
+      </main>
     </div>
+    <footer class="footer">
+      <p>&copy; 2023 Financial Tracker. All rights reserved.</p>
+    </footer>
+  </div>
 </body>
+
 </html>
