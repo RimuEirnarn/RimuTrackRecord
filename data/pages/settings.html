@@ -8,9 +8,11 @@
 
       <div class="form-check form-switch mb-3">
         <input class="form-check-input" type="checkbox" role="switch" id="dark-theme-switch"
-          data-bind="system/dark_theme">
+          data-bind="system/dark_theme" />
         <label class="form-check-label" for="dark-theme-switch">Use dark theme?</label>
-        <div class="invalid-feedback" data-feedback="system/theme">Invalid value</div>
+        <div class="invalid-feedback" data-feedback="system/theme">
+          Invalid value
+        </div>
       </div>
     </div>
   </div>
@@ -18,7 +20,9 @@
   <div class="card mb-2 background-base w-50">
     <div class="card-body">
       <h3>System Actions</h3>
-      <button type="button" class="btn bg-danger" data-action="redownload:null">Redownload WebUI Dependencies</button>
+      <button type="button" class="btn bg-danger" data-action="redownload:null">
+        Redownload WebUI Dependencies
+      </button>
     </div>
   </div>
 
@@ -26,7 +30,7 @@
     <div class="card-body">
       <h3>System Locale</h3>
       <label for="system-locale" class="form-label">Locale identifier</label>
-      <input type="text" class="form-control mb-2" placeholder="en" data-bind="system/locale" id="system-locale">
+      <input type="text" class="form-control mb-2" placeholder="en" data-bind="system/locale" id="system-locale" />
 
       <label for="system-currency" class="form-label">Currency identifier</label>
       <select class="form-select mb-3" aria-label="Currencies" data-bind="system/currency">
@@ -35,7 +39,142 @@
     </div>
   </div>
 
+  <div class="card mb-2 background-base w-50">
+    <div class="card-body">
+      <h3>Advanced</h3>
+      <div data-bind="app" class="config">
+        <h4>Window Configuration</h4>
+
+        <div class="input-group mb-3 has-validation">
+          <span class="input-group-text">App width and height</span>
+          <input type="number" aria-label="width" class="form-control" data-bind="app/width" id="width" />
+          <input type="number" aria-label="height" class="form-control" data-bind="app/height" id="height" />
+          <div class="invalid-feedback" data-feedback="app/width app/height">
+            Please enter a valid width:height value.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="background-color-input" class="form-label">Application Background Color</label>
+          <input type="text" class="form-control" id="background-color-input" placeholder="App Background color"
+            data-bind="app/background_color" />
+          <div class="invalid-feedback" data-feedback="app/background_color">
+            Please enter a valid background color.
+          </div>
+        </div>
+
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="resizable-input"
+            data-bind="app/resizable" />
+          <label class="form-check-label" for="resizable-input">Resizable</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="fullscreen-input"
+            data-bind="app/fullscreen" />
+          <label class="form-check-label" for="fullscreen-input">Fullscreen</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="hidden-input" data-bind="app/hidden" />
+          <label class="form-check-label" for="hidden-input">Hidden at startup</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="frameless-input"
+            data-bind="app/frameless" />
+          <label class="form-check-label" for="frameless-input">Frameless</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="easy-drag-input"
+            data-bind="app/easy_drag" />
+          <label class="form-check-label" for="easy-drag-input">Easy drag</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="minimized-input"
+            data-bind="app/minimized" />
+          <label class="form-check-label" for="minimized-input">Start at minimized</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="on-top-input" data-bind="app/on_top" />
+          <label class="form-check-label" for="on-top-input">Start app on top</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="confirm-close-input"
+            data-bind="app/confirm_close" />
+          <label class="form-check-label" for="confirm-close-input">Prompt confirmation when attempting to close</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="transparent-input"
+            data-bind="app/transparent" />
+          <label class="form-check-label" for="transparent-input">Transparency support</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="text-select-input"
+            data-bind="app/text_select" />
+          <label class="form-check-label" for="text-select-input">Text-selection support</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="zoomable-input" data-bind="app/zoomable" />
+          <label class="form-check-label" for="zoomable-input">Zoom support</label>
+        </div>
+      </div>
+
+      <div data-bind="start" class="config">
+        <h4>Startup Configuration</h4>
+        <div class="mb-3">
+          <label for="gui-input" class="form-label">GUI Backend</label>
+          <input type="text" class="form-control" id="gui-input" placeholder="GUI Backend" data-bind="start/gui"
+            disabled data-unrequire />
+        </div>
+
+        <div class="mb-3">
+          <label for="ua-input" class="form-label">User Agent</label>
+          <input type="text" class="form-control" id="ua-input" placeholder="Webapp 0.1.0/PyWebview 5.3.2"
+            data-bind="start/user_agent" data-unrequire disabled />
+          <div class="invalid-feedback" data-feedback="start/user_agent">
+            Please enter a valid custom user agent
+          </div>
+        </div>
+
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="debug-input" data-bind="start/debug" data-init data-init-disabled="compute?attribute:this/data-prod==true" data-prod="$[prod]"/>
+          <label class="form-check-label" for="debug-input">Start app with DEBUG flag</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="private-mode-input"
+            data-bind="start/private_mode" />
+          <label class="form-check-label" for="private-mode-input">Always on Private Mode</label>
+        </div>
+      </div>
+
+      <div data-bind="config" class="config">
+        <h4>Webapp Configuration</h4>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="allow-downloads-input"
+            data-bind="config/ALLOW_DOWNLOADS" />
+          <label class="form-check-label" for="allow-downloads-input">Allow downloads</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="allow-file-urls-input"
+            data-bind="config/ALLOW_FILE_URLS" />
+          <label class="form-check-label" for="allow-file-urls-input">Allow file:// urls</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="allow-external-links-in-browser-input"
+            data-bind="config/ALLOW_EXTERNAL_LINKS_IN_BROWSER" />
+          <label class="form-check-label" for="allow-external-links-in-browser-input">Allow external links to be opened
+            in default browser</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="open-devtool-in-debug-input"
+            data-bind="config/OPEN_DEVTOOL_IN_DEBUG" />
+          <label class="form-check-label" for="open-devtool-in-debug-input">Open Devtool in DEBUG mode</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
-    <button class="btn accent-color btn-secondary-hover" type="submit" data-id="settings-submit">$[submit_text]</button>
+    <button class="btn accent-color btn-secondary-hover" type="submit" data-id="settings-submit">
+      $[submit_text]
+    </button>
   </div>
 </form>

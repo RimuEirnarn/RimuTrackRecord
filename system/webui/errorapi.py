@@ -20,7 +20,7 @@ def cast_error(error: BaseException):
     return {
         "name": type(error).__name__,
         "value": str(error),
-        "notes": error.__notes__,
+        "notes": getattr(error, "__notes__", []),
         "arguments": error.args,
         "cause": cast_error(error.__cause__) if error.__cause__ else None,
         "context": cast_error(error.__context__) if error.__context__ else None,
@@ -48,5 +48,6 @@ class ErrorAPI:
             if issubclass(exc_type, KeyboardInterrupt):
                 sys.__excepthook__(exc_type, exc_value, exc_traceback)
                 return
+            return
 
         sys.excepthook = handle_exception

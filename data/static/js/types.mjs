@@ -5,12 +5,15 @@
  * @prop {SystemAPI} sys
  * @prop {DatabaseAPI} db
  * @prop {ConfigAPI} config
+ * @prop {ConfigAPI} sys_config
  * @prop {StringAPI} str
  * @prop {ErrorAPI} error
  * @prop {WindowAPI} window
  * @prop {boolean} init_error
  * 
  * @prop {() => Promise<Number>} retrieve_current_savings
+ * @prop {() => Promise<never>} exit
+ * @prop {() => Promise<boolean>} is_prod
  */
 
 /**
@@ -47,6 +50,7 @@
  * @prop {(name: string) => Promise<null>} delete
  * @prop {(name: string, value: any) => Promise<null>} set_if_not_exists
  * @prop {() => Promise<Array.<string, string>>} config_dump
+ * @prop {() => Promise<Object.<string, any>>} as_object
  */
 
 

@@ -170,7 +170,8 @@ main.db
 
 /temp/*
 !/temp/README.md
-!/temp/profile
+/temp/profile/*
+!/temp/profile/README.md
 
 /vaults/.obsidian/plugins
 /vaults/.trash

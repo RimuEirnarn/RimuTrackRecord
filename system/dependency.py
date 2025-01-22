@@ -70,11 +70,11 @@ def load_dependencies() -> dict[str, str | list[str, str, bool]]:
     except JSONDecodeError:
         return {
             "bootstrap_icons": [
-                "https://github.com/twbs/icons/releases/download/v1.11.3/bootstrap-icons-1.11.3.zip", # pylint: disable=line-too-long
+                "https://github.com/twbs/icons/releases/download/v1.11.3/bootstrap-icons-1.11.3.zip",  # pylint: disable=line-too-long
                 "folder",
             ],
             "bootstrap": [
-                "https://github.com/twbs/bootstrap/releases/download/v5.3.3/bootstrap-5.3.3-dist.zip", # pylint: disable=line-too-long
+                "https://github.com/twbs/bootstrap/releases/download/v5.3.3/bootstrap-5.3.3-dist.zip",  # pylint: disable=line-too-long
                 "folder",
             ],
             "jquery": ["https://code.jquery.com/jquery-3.6.4.min.js", "file", True],
@@ -83,7 +83,7 @@ def load_dependencies() -> dict[str, str | list[str, str, bool]]:
                 "folder",
             ],
             "chart.min.js": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js",
-            "chart.umd.js.map": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js.map", # pylint: disable=line-too-long
+            "chart.umd.js.map": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js.map",  # pylint: disable=line-too-long
             "countries.data.json": "https://restcountries.com/v3.1/all?fields=name,currencies",
         }
 
@@ -195,9 +195,11 @@ def install_webui_dependency(force=False):  # pylint: disable=too-many-locals
 
             if last_modified == current_modified:
                 if current_checksum == calculate_checksum(
-                    temp, metadata.get(name, {'checksum': ""})['checksum']
+                    temp, metadata.get(name, {"checksum": ""})["checksum"]
                 ):
-                    print(f"  {index+1:0>2} {name} is up-to-date. Skipping.", flush=True)
+                    print(
+                        f"  {index+1:0>2} {name} is up-to-date. Skipping.", flush=True
+                    )
                     continue
             updates.append(name)
 
@@ -225,7 +227,7 @@ def install_webui_dependency(force=False):  # pylint: disable=too-many-locals
     if installs:
         print(f"-> Installed: {' '.join(installs)}", flush=True)
     if updates:
-        print(f'-> Updated: {' '.join(updates)}', flush=True)
+        print(f"-> Updated: {' '.join(updates)}", flush=True)
 
     if not installs and not updates:
-        print('-> No updates available', flush=True)
+        print("-> No updates available", flush=True)

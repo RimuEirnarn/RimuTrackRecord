@@ -5,7 +5,7 @@ from typing import Any
 from warnings import warn
 
 from sqlite_database import Row, Table
-from .database import config as _config, init
+from .database import config as _config, system_config as _system
 
 IGNORED_MESSAGE = ("cannot commit - no transaction is active",)
 
@@ -22,11 +22,12 @@ class _ConfigStore:
     """Config store"""
     def __init__(self, config_: Table = None):
         self._tb = config_ or _config
-        try:
-            if not self._tb.select_one():
-                self._tb = init()[0]
-        except OperationalError:
-            self._tb = init()[0]
+        # self._tb.exists()
+        # try:
+        #     if not self._tb.select_one():
+        #         self._tb = init()[tbl_name]
+        # except OperationalError:
+        #     self._tb = init()[tbl_name]
 
     def __getitem__(self, name: str):
         result = self._tb.select_one({'name': name}, only="value")
@@ -45,6 +46,7 @@ class _ConfigStore:
         except OperationalError as exc:
             if str(exc) not in IGNORED_MESSAGE:
                 raise exc
+
         # self._tb.commit()
 
     def __delitem__(self, name: str):
@@ -79,3 +81,4 @@ class _ConfigStore:
         return bool(self._tb.select_one({'name': name}))
 
 config = _ConfigStore()
+system_config = _ConfigStore(_system)
