@@ -11,8 +11,10 @@
             "id": "b01f89486d548518",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "excalidraw",
+              "state": {
+                "file": "system/Base ERD.excalidraw.md"
+              }
             }
           }
         ]
@@ -81,6 +83,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "system/Base ERD.excalidraw.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +100,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "system/Base ERD.excalidraw.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +122,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "system/Base ERD.excalidraw.md"
+              }
             }
           }
         ]
@@ -135,9 +141,21 @@
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
-      "command-palette:Open command palette": false
+      "command-palette:Open command palette": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
   "active": "b01f89486d548518",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "system/Base ERD.excalidraw.md",
+    "system/Transaction/Transaction.excalidraw.md",
+    "system/Transaction/Schema.md",
+    "system/Transaction/Transaction.canvas",
+    "system/Transaction",
+    "system/Transaction.md",
+    "Untitled.md",
+    "system",
+    "TODO.md",
+    "New Text Document.txt"
+  ]
 }

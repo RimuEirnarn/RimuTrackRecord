@@ -3,3 +3,5 @@ pywebview
 tqdm
 requests
 argh
+python-dotenv
+faker

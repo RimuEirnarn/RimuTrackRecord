@@ -9,4 +9,7 @@
         "/.venv": true,
         "/node_modules": true,
     },
+    "obsidian-md-vsc.defaultVault": "vaults",
+    "obsidian-md-vsc.defaultVaultPath": "F:\\RimuAerisya\\Stuff\\RimuTrackRecord\\vaults",
+    "obsidian-md-vsc.defaultNote": "TODO",
 }
