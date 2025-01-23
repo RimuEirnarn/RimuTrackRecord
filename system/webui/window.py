@@ -45,7 +45,7 @@ class WindowAPI:
     def size(self, size_: tuple[int, int] | None = None):
         """Window size"""
         if not size_:
-            return (self._window.height, self._window.width) if self._window else (0, 0)
+            return (self._window.width, self._window.height) if self._window else (0, 0)
         self._check()
         self._window.set_window_size(*size_)
         return (-1, -1)
