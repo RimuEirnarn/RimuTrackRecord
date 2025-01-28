@@ -11,13 +11,28 @@
             "id": "b01f89486d548518",
             "type": "leaf",
             "state": {
-              "type": "excalidraw",
+              "type": "markdown",
               "state": {
-                "file": "system/Base ERD.excalidraw.md"
+                "file": "TODO.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "b102f672b245d017",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Feature notes.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -83,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "system/Base ERD.excalidraw.md",
+                "file": "Feature notes.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "system/Base ERD.excalidraw.md",
+                "file": "Feature notes.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -123,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "system/Base ERD.excalidraw.md"
+                "file": "Feature notes.md"
               }
             }
           }
@@ -145,17 +160,17 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "b01f89486d548518",
+  "active": "b102f672b245d017",
   "lastOpenFiles": [
+    "TODO.md",
+    "Feature notes.md",
     "system/Base ERD.excalidraw.md",
     "system/Transaction/Transaction.excalidraw.md",
     "system/Transaction/Schema.md",
     "system/Transaction/Transaction.canvas",
     "system/Transaction",
     "system/Transaction.md",
-    "Untitled.md",
     "system",
-    "TODO.md",
     "New Text Document.txt"
   ]
 }
