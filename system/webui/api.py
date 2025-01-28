@@ -12,9 +12,10 @@ from .errorapi import ErrorAPI
 from .window import WindowAPI
 from ..configstore import system_config
 
+DBAPI = DatabaseAPI()
 class API:
     """Entry Level API"""
-    database = DatabaseAPI()
+    db = DBAPI
     sys = SystemAPI()
     config = ConfigAPI()
     sys_config = ConfigAPI(system_config)
@@ -43,8 +44,9 @@ class API:
 
     def retrieve_current_savings(self):
         """Return current money/savings from all transactions"""
-        s: float = transaction.select(only='amount')
-        return sum(s)
+        income: float = sum(transaction.select({'type': 'income'}, only='amount'))
+        outcome: float = sum(transaction.select({'type': 'expense'}, only="amount"))
+        return income - outcome
 
     def exit(self):
         """Exit"""

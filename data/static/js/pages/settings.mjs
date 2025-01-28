@@ -26,6 +26,20 @@ async function pushToSystemSettings(data) {
   }
 }
 
+async function detectWindowChange() {
+  console.debug("Detecting changes within window")
+  const [width, height] = await system.window.size()
+  const [configWidth, configHeight] = [await system.sys_config.get('width'), await system.sys_config.get('height')]
+  if ((width != configWidth) || (height != configHeight)) {
+    await system.window.move(0, 0)
+    await system.window.resize(configWidth, configHeight)
+  }
+
+  const isFullscreen = await system.window.is_fullscreen()
+  if (isFullscreen != (await system.sys_config.get("fullscreen")))
+    await system.window.toggle_fullscreen()
+}
+
 async function loadObjectProfile() {
   const data = await system.sys_config.as_object()
   const profile = new SysProfile()
@@ -101,6 +115,7 @@ async function postInitSettingsPage() {
     const app_data = { ...data }
     delete app_data.system
     await pushToSystemSettings(app_data)
+    await detectWindowChange()
     notification.push({ title: "", body: "Settings saved" })
   })
   bound_buttons(document.querySelector('body'), globalRepository)

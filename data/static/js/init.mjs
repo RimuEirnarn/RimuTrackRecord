@@ -41,7 +41,7 @@ const SYSTEM_SETTINGS = {
         /** Strict value */
         value: true,
         /** Throw an error if false. Code needs to define fallback if forgiving is set to true */
-        forgiving: true
+        forgiving: false
     },
 
     /** System theme */

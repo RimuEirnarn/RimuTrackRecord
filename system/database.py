@@ -128,7 +128,10 @@ def init():
         system.log.critical("\n %s", "".join(format_exception(exc)))
         sys_exit(1)
 
-    _tables = {tbl: database.table(tbl) for tbl in tables_d}
+    if _initialized:
+        return _tables_d
+
+    _tables = _tables_d = {tbl: database.table(tbl) for tbl in tables_d}
     _initialized = True
     return _tables
 

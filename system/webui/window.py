@@ -3,6 +3,7 @@
 from webview import Window, OPEN_DIALOG, FOLDER_DIALOG, SAVE_DIALOG
 from webview.window import FixPoint
 
+from ..configstore import system_config
 from ..errors import InitiationError
 
 DIALOG_ENUM = {"open": OPEN_DIALOG, "folder": FOLDER_DIALOG, "save": SAVE_DIALOG}
@@ -12,6 +13,10 @@ FIXPOINTENUM = {
     "EAST": FixPoint.EAST.value,
     "WEST": FixPoint.WEST.value,
     "SOUTH": FixPoint.SOUTH.value,
+}
+
+STATE = {
+    "fullscreen": getattr(system_config, "fullscreen", False)
 }
 
 class WindowAPI:
@@ -124,6 +129,7 @@ class WindowAPI:
     def toggle_fullscreen(self):
         """Toggle fullscreen"""
         self._check()
+        STATE['fullscreen'] = not STATE['fullscreen']
         self._window.toggle_fullscreen()
 
     def maximize(self):
@@ -145,3 +151,7 @@ class WindowAPI:
         """Return native window"""
         self._check()
         return self._window.native
+
+    def is_fullscreen(self):
+        """Returns true if fullscreen"""
+        return STATE["fullscreen"]

@@ -98,12 +98,12 @@
  * @prop {(data: Transaction) => Promise<null>} add_transaction Add a transaction
  * @prop {(data: Transaction) => Promise<null>} update_transaction Update a transaction
  * @prop {(transaction_id: string) => Promise<null>} delete_transaction Delete a transaction
- * @prop {(limit: number=0) => Promise<Transaction[]>} get_transactions Get all transactions
+ * @prop {(limit: number=0, order?: string = null) => Promise<Transaction[]>} get_transactions Get all transactions
  * @prop {(transaction_id: string) => Promise<Transaction>} get_transaction Get a transaction
- * @prop {(category_id: string, limit: number=0) => Promise<Transaction[]>} get_transactions_by_category Get all transactions by category
- * @prop {(date: number, limit: number=0) => Promise<Transaction[]>} get_transactions_by_time Get all transactions by time
- * @prop {(tr_type: string, limit: number=0) => Promise<Transaction[]>} get_transactions_by_type Get all transactions by type
- * @prop {(amount: number, limit: 0number=0) => Promise<Transaction[]>} get_transaction_by_amount Get all transactions by amount
+ * @prop {(category_id: string, limit: number=0, order?: string = null) => Promise<Transaction[]>} get_transactions_by_category Get all transactions by category
+ * @prop {(date: number, state: string, limit: number=0, order?: string = null) => Promise<Transaction[]>} get_transactions_by_time Get all transactions by time
+ * @prop {(tr_type: string, limit: number=0, order?: string = null) => Promise<Transaction[]>} get_transactions_by_type Get all transactions by type
+ * @prop {(amount: number, state: string, limit: number=0, order?: string = null) => Promise<Transaction[]>} get_transaction_by_amount Get all transactions by amount
  * @prop {() => Promise<Transaction[]>} get_ungrouped_transactions Get all ungrouped transactions
  */
 
@@ -203,6 +203,7 @@
  * @prop {() => Promise<null>} restore Restore current minimized window
  * @prop {() => Promise<null>} show Show if hidden
  * @prop {() => Promise<null>} toggle_fullscreen Toggle fullscreen
+ * @prop {() => Promise<bool>} is_fullscreen Returns true if current window is fullscreen
  * @prop {() => Promise<null>} maximize Maximize the window
  * @prop {() => Promise<null>} minimize minimize the window
  * @prop {() => Promise<null>} native_window Return native window object

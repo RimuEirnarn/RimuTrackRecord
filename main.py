@@ -11,11 +11,19 @@ import system.webui.config.profile
 import system.config
 import system.configstore
 import system.dependency
+import system.console
 
 system.log.info("Starting RimuTrackRecord")
 load_dotenv()
 # system.database.init()
 
+
+def console():
+    """Pops up command-line"""
+    try:
+        system.console.WebUICMD().cmdloop()
+    except KeyboardInterrupt:
+        return
 
 def clear():
     """Clear all webui dependency caches"""
@@ -92,7 +100,7 @@ def main(no_run: bool = False):
 if __name__ == "__main__":
     parser = ArghParser()
     parser.add_commands(
-        [main, update, clear, install, seed, dump_config, delete_config]
+        [main, update, clear, install, seed, dump_config, delete_config, console]
     )
     set_default_command(parser, main)
     parser.dispatch()

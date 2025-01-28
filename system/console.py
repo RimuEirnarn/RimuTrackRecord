@@ -1,5 +1,6 @@
 """WebUI Command-line"""
 
+from sys import executable
 from shlex import split
 from cmd import Cmd
 from subprocess import run
@@ -72,7 +73,7 @@ class WebUICMD(Cmd):
         """Run main file as child process"""
         try:
             self.do_clear("")
-            proc = run(["python", "main.py"], check=True)
+            proc = run([executable, "main.py"], check=True)
             print("Child process returns: ", proc.returncode)
         except ChildProcessError as exc:
             print("Error with child process: ", str(exc))

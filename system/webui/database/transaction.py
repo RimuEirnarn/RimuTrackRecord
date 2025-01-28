@@ -26,7 +26,7 @@ class TransactionAPI:
         if not isinstance(data["amount"], (int, float)):
             raise TypeError("Amount must be a number")
 
-        if not isinstance(data['time'], float):
+        if not isinstance(data["time"], float):
             raise TypeError("Time must be a float")
 
         if "notes" in data and not isinstance(data["notes"], str):
@@ -68,38 +68,46 @@ class TransactionAPI:
         """Get a transaction from the database"""
         return transaction.select_one({"id": transaction_id})
 
-    def get_transactions(self, limit=0):
+    def get_transactions(self, limit=0, order: str = None):
         """Get all transactions from the database"""
-        return transaction.select(limit=limit)
+        return transaction.select(limit=limit, order=order)
 
-    def get_transactions_by_category(self, category_id: str, limit=0):
+    def get_transactions_by_category(self, category_id: str, limit=0, order=None):
         """Get all transactions for a given category"""
-        return transaction.select({"category_id": category_id}, limit=limit)
+        return transaction.select(
+            {"category_id": category_id}, limit=limit, order=order
+        )
 
-    def get_transactions_by_time(self, date: float, state: Literal["newer", "older"], limit=0):
+    def get_transactions_by_time(
+        self, date: float, state: Literal["newer", "older"], limit=0, order=None
+    ):
         """Get all transactions for a given time"""
         return transaction.select(
             [le("time", date) if state == "older" else ge("time", date)],
-            limit=limit
+            limit=limit,
+            order=order,
         )
 
-    def get_transactions_by_type(self, tr_type: str, limit=0) -> list[Row]:
+    def get_transactions_by_type(self, tr_type: str, limit=0, order=None) -> list[Row]:
         """Get all transactions for a given type"""
-        return transaction.select({"type": tr_type}, limit=limit)
+        return transaction.select({"type": tr_type}, limit=limit, order=order)
 
-    def get_transactions_by_amount(self, amount: float, state: Literal["greater", "less"], limit):
+    def get_transactions_by_amount(
+        self, amount: float, state: Literal["greater", "less"], limit=0, order=None
+    ):
         """Get all transactions for a given amount"""
         return transaction.select(
             [ge("amount", amount) if state == "greater" else le("amount", amount)],
-            limit=limit
+            limit=limit,
+            order=order,
         )
 
     def get_ungrouped_transactions(self) -> list[Row]:
         """Get all ungrouped transactions"""
-        query = '''
+        query = """
                 SELECT t.*
                 FROM transaction_tbl t
                 LEFT JOIN collection_transaction ct ON t.id = ct.transaction_id
                 WHERE ct.transaction_id IS NULL
-            '''
+            """
         return database.sql.execute(query).fetchall()

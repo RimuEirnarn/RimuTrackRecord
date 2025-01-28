@@ -62,7 +62,7 @@ class _ConfigStore:
         result = self._tb.select_one({"name": name}, only="value")
         if isinstance(result, Row):
             raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
-        return result
+        return cast(result)
 
     def __setattr__(self, name: str, value: Any):
         if name == '_tb':  # Special case for setting _tb itself
