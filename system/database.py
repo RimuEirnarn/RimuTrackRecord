@@ -65,7 +65,7 @@ def reset(use_config=False):
     """Reset specific tables"""
     tables_d = [
         "transaction_tbl",
-        "categories",
+        "category",
         "budget",
         "collection",
         "collection_transaction",
@@ -89,7 +89,7 @@ def init():
     global _initialized, _tables_d # pylint: disable=global-statement
     tables_d = [
         "transaction_tbl",
-        "categories",
+        "category",
         "budget",
         "collection",
         "collection_transaction",
@@ -141,7 +141,7 @@ tables = init()
 
 # Export individual tables for easy imports
 transaction = tables["transaction_tbl"]
-categories = tables["categories"]
+categories = tables["category"]
 budget = tables["budget"]
 collection = tables["collection"]
 collection_transaction = tables["collection_transaction"]
