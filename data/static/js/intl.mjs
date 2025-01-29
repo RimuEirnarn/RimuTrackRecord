@@ -9,7 +9,7 @@ const DM = new DownloadManager(true)
  */
 async function loadCurrencyData() {
   DM.setQueue([prepare("currencies", "/static/vendor/countries.data.json", {}, true)])
-  await DM.execute_async((response_string, object) => {
+  await DM.execute_async((response_string, _) => {
     let json = JSON.parse(response_string)
     json.forEach(element => {
       // console.log(element)
@@ -21,9 +21,14 @@ async function loadCurrencyData() {
     });
     return json
   })
+  DM.clear()
 }
 
-async function formatCurrency(number) {
+/**
+ * 
+ * @returns {Promise<string>}
+ */
+async function _fetchLocale() {
   let locale = await system.config.get("locale", DEFAULT_SETTINGS.locale)
   if (SYSTEM_SETTINGS.strict.value) {
     if (!localeValidity(locale)) {
@@ -32,9 +37,29 @@ async function formatCurrency(number) {
       locale = DEFAULT_SETTINGS.locale
     }
   }
-  let currency = await system.config.get("currency", DEFAULT_SETTINGS.currency)
-  console.debug(locale, currency)
+  return locale
+}
+
+/**
+ * Format currency as plain number to any currency
+ * @param {number} number 
+ * @returns {Promise<string>}
+ */
+async function formatCurrency(number) {
+  let locale = await _fetchLocale()
+  /** @type {string} */ let currency = await system.config.get("currency", DEFAULT_SETTINGS.currency)
+  // console.debug(locale, currency)
   return new Intl.NumberFormat(locale, { style: "currency", currency: currency }).format(number)
+}
+
+/**
+ * Format time (timestamp) into relative time
+ * @param {number} time 
+ * @returns {Promise<string>}
+ */
+async function formatTime(time) {
+  let locale = await _fetchLocale()
+  return new Intl.DateTimeFormat(locale, {timeStyle: 'medium', dateStyle: 'medium'}).format(time * 1000)
 }
 
 function localeValidity(locale) {
@@ -49,4 +74,4 @@ function localeValidity(locale) {
 await loadCurrencyData()
 // console.debug(MAPPING)
 
-export { loadCurrencyData, formatCurrency, localeValidity, MAPPING }
+export { loadCurrencyData, formatCurrency, localeValidity, formatTime, MAPPING }
