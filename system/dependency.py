@@ -9,13 +9,17 @@ from shutil import copy
 from time import sleep
 from zipfile import ZipFile
 from tqdm import tqdm
+from requests.exceptions import ConnectionError # pylint: disable=redefined-builtin
 import requests
+from colorful_string import Combination
 
 from .config import ROOT
 
 PATH = Path("data/static/vendor")
 TEMP_PATH = ROOT / "temp"
 
+error = Combination.from_string("fg_Red")
+info = Combination.from_string("fg_Green")
 
 def list_get(array: list, index: int, default):
     """Much like how dict.get() is"""
@@ -42,7 +46,7 @@ def _download(url: str, destination: str, prefix: str, name: str, total_size: in
                     pbar.update(len(chunk))
 
 
-def download_file(
+def download_file( # pylint: disable=too-many-arguments
     url, destination, prefix: str = "", name: str = "", retries=3, retries_after=2
 ):
     """Download a file with a progress bar using requests and tqdm."""
@@ -148,7 +152,7 @@ def clear_cache():
         print(f"{index+1:0>2} {file} is removed from cache", flush=True)
 
 
-def install_webui_dependency(force=False):  # pylint: disable=too-many-locals
+def install_webui_dependency(force=False):  # pylint: disable=too-many-locals,too-many-branches,too-many-statements
     """Install Web UI dependencies with update checking."""
     metadata = load_metadata()
     urls = load_dependencies()
@@ -207,7 +211,11 @@ def install_webui_dependency(force=False):  # pylint: disable=too-many-locals
         print(f"  {index+1:0>2} Downloading {name} from {url}...", flush=True)
         if not name in updates:
             installs.append(name)
-        download_file(url, temp, "         ", name)
+        try:
+            download_file(url, temp, "         ", name)
+        except ConnectionError:
+            print(error(f"         {name} failed (Connection error)"))
+            continue
 
         if url.endswith(".zip") or action_type == "folder":
             with ZipFile(temp) as zip_file:
@@ -225,9 +233,9 @@ def install_webui_dependency(force=False):  # pylint: disable=too-many-locals
     save_metadata(metadata)
     print()
     if installs:
-        print(f"-> Installed: {' '.join(installs)}", flush=True)
+        print(info(f"-> Installed: {' '.join(installs)}"), flush=True)
     if updates:
-        print(f"-> Updated: {' '.join(updates)}", flush=True)
+        print(info(f"-> Updated: {' '.join(updates)}"), flush=True)
 
     if not installs and not updates:
-        print("-> No updates available", flush=True)
+        print(info("-> No updates available"), flush=True)

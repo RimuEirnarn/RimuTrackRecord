@@ -5,3 +5,4 @@ requests
 argh
 python-dotenv
 faker
+https://github.com/RimuEirnarn/colorful_string/archive/refs/tags/v0.1.4.tar.gz
