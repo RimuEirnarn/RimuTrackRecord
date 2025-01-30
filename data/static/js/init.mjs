@@ -123,8 +123,23 @@ try {
   );
   setLog("Base initialization is completed");
   INIT_STATE.init_to_runtime_start = performance.now()
+  // @ts-ignore
+  document.querySelector('#app').innerHTML = ""
+  document.querySelector('html')?.classList.remove('no-scrollbar')
 } catch (error) {
   console.error("Error initializing pywebview:", error);
+  // @ts-ignore
+  const spinner = $(document.querySelector("#base-spinner"))
+  const syslog = document.querySelector('#system-log')
+  // @ts-ignore
+  spinner.removeClass("spinner-border")
+  // @ts-ignore
+  spinner.addClass('fs-3')
+  // @ts-ignore
+  spinner.html(`<span class='text-danger'><i class="bi bi-exclamation-triangle-fill"></i></span>`)
+  syslog?.classList.add("text-danger")
+  // @ts-ignore
+  syslog.innerText = "Unable to load the app. Pywebview is unavailable. Please refresh"
 }
 
 export { system, INIT_STATE, SYSTEM_SETTINGS, setLog, jQuery, chart as Chart, fix_point, dialog_enum, DEFAULT_SETTINGS };
