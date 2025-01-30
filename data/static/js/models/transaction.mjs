@@ -8,8 +8,8 @@ class Transaction {
    * @param {string} id 
    * @param {string} type 
    * @param {string} category 
-   * @param {string} amount 
-   * @param {string} time 
+   * @param {number} amount 
+   * @param {number} time 
    * @param {string} notes 
    */
   constructor(id, type, category, amount, time, notes) {
