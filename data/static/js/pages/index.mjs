@@ -5,7 +5,7 @@ import { Transaction } from "../models/transaction.mjs";
 async function setupIndexPage() {
   const balance = await system.retrieve_current_savings()
   const first_five = await Transaction.get_all(5, 'asc')
-  console.debug(first_five)
+  // console.debug(first_five)
   return {
     'current_balance': await formatCurrency(balance),
     'balance_status': balance >= 0 ? 'text-success' : 'text-danger',
