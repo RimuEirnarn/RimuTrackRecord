@@ -74,6 +74,8 @@ async function page_setup() {
   const routes = {
     "/": "./pages/index.mjs",
     "/settings": "./pages/settings.mjs",
+    "/transaction": "./pages/transactions.mjs",
+    "/add_transaction": "./pages/add_transaction.mjs"
   };
 
   const routeSetup = {};
